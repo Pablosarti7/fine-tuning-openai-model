@@ -14,13 +14,13 @@ async def monitor_job(client, job_id):
         print(f"Status: {job.status}")
         if job.status in ['succeeded', 'failed']:
             break
-        await asyncio.sleep(60)  # Check every minute
+        await asyncio.sleep(10)  # Check every minute
 
 async def main():
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
     # Upload the training file
-    with open("coffee_shop_finetune.jsonl", "rb") as file:
+    with open("training_examples.jsonl", "rb") as file:
         training_file = client.files.create(
             file=file,
             purpose="fine-tune"
@@ -30,12 +30,14 @@ async def main():
     job = client.fine_tuning.jobs.create(
         training_file=training_file.id,
         model="gpt-4o-2024-08-06",
-        method={
-            "type": "dpo",
-            "dpo": {
-                "hyperparameters": {"beta": 0.1},
-            },
-        },
+          method={
+            "type": "supervised",
+            "supervised": {
+                "hyperparameters": {
+                    "n_epochs": 3
+                }
+            }
+        }
     )
     
     print(f"Job created with ID: {job.id}")

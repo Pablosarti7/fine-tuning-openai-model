@@ -4,7 +4,7 @@ import numpy as np
 from collections import defaultdict
 
 
-data_path = "coffee_shop_finetune.jsonl"
+data_path = "training_examples.jsonl"
 
 # Load the dataset
 with open(data_path, 'r', encoding='utf-8') as f:
