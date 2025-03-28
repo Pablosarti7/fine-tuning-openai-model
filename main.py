@@ -16,7 +16,7 @@ with open("coffee_shop_finetune.jsonl", "rb") as file:
         purpose="fine-tune"
     )
 
-
+# variable for the fine tuning of the model
 job = client.fine_tuning.jobs.create(
     training_file=training_file.id,
     model="gpt-4o-mini-2024-07-18"
